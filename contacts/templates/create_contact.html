@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Crear Nuevo{% endblock title %}
+{% block navtitle %}Crear Nuevo{% endblock navtitle %}
+
+{% block content %}
+    <div class="row mt-3">
+        <div class="col">
+            <form class="card" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                </div>
+                <div class="card-footer text-end">
+                    <a class="btn btn-secondary" href="{% url 'index' %}">Cancelar</a>
+                    <button class="btn btn-primary" type="submit" value="Save">Crear Contacto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

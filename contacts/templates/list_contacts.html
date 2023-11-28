@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12 text-end mt-3">
+        <a href="{% url 'create' %}"  class="btn btn-primary">Crear Contacto</a>
+    </div>
+
+    {% for contact in object_list %}
+
+    <div>
+        <div class="modal fade" id="{{ contact.name }}{{ contact.last_name }}ModalConfirmation" tabindex="-1" aria-labelledby="{{ contact.pk }}ModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="{{ contact.pk }}ModalLabel">Eliminar</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{% url 'delete' pk=contact.pk %}">
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            <p class="fs-4">Estas seguro de eliminar a <strong>{{ contact.name }} {{ contact.last_name }}?</strong></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-8">
+                            <p class="card-text">{{ contact.name }} {{ contact.last_name }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="card-text text-end">{{ contact.updated_at|date }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-1">
+                        <a class="btn btn-secondary btn-sm" href="{% url 'edit' contact_id=contact.pk %}">Editar</a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#{{ contact.name }}{{ contact.last_name }}ModalConfirmation">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% empty %}
+    <li>No hay contactos aun.</li>
+    {% endfor %}
+</div>
+{% endblock content %}
